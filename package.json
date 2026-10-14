@@ -1,0 +1,39 @@
+{
+  "name": "hermes-cursor-companion",
+  "version": "0.4.0",
+  "private": true,
+  "description": "A screen-aware Windows cursor companion for Hermes Agent",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build:native": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File windows/build-cursor-dot.ps1",
+    "build": "npm run build:native && tsc -p tsconfig.electron.json && vite build",
+    "start": "npm run build && electron .",
+    "typecheck": "tsc -p tsconfig.electron.json --noEmit && tsc -p tsconfig.renderer.json --noEmit",
+    "pack:win": "npm run build && electron-builder --win nsis --x64 --config.electronDist=node_modules/electron/dist --config.win.signAndEditExecutable=false"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "yaml": "2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.8.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "@vitejs/plugin-react": "6.1.2",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  },
+  "build": {
+    "compression": "normal",
+    "appId": "dev.hermes.cursorcompanion",
+    "productName": "Hermes Cursor Companion",
+    "directories": { "output": "release" },
+    "files": ["dist/**/*", "dist-electron/**/*", "package.json", "assets/**/*"],
+    "extraResources": [{ "from": "windows/cursor-dot.exe", "to": "cursor-dot.exe" }, { "from": "windows/act.ps1", "to": "act.ps1" }, { "from": "windows/speak.ps1", "to": "speak.ps1" }, { "from": "windows/local-stt-worker.py", "to": "local-stt-worker.py" }],
+    "win": { "target": "nsis", "icon": "assets/icon.ico" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true }
+  }
+}

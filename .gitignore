@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dist-electron/
+release/
+*.log
+.env
+.env.*
+!.env.example
+windows/*.exe
+PARENT-*.md
+*-TEST-RESULT.json
+FEATURE-TEST-RESULTS.json
+__pycache__/
+*.pyc
